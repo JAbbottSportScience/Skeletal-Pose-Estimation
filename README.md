@@ -13,16 +13,51 @@ Optimized for Apple Silicon (M4) with native MPS support.
 
 ## Installation
 
+### 1. Clone the Repository
+
 ```bash
-# Create virtual environment
+git clone https://github.com/JAbbottSportScience/Skeletal-Pose-Estimation.git
+cd Skeletal-Pose-Estimation
+```
+
+### 2. Create Virtual Environment
+
+```bash
 python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-# Install (yes, that's it)
-pip install ultralytics opencv-python
+### 3. Install Dependencies
 
-# Verify
-python -c "from ultralytics import YOLO; print('Ready!')"
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Download Model Weights
+
+The YOLOv8-pose model weights (~133 MB) are not included in this repository due to GitHub's file size limits.
+
+**Option A: Automatic download** (recommended)  
+The model will download automatically on first run:
+```bash
+python main.py --video path/to/sprint.mp4
+```
+
+**Option B: Manual download**  
+```bash
+python download_model.py
+```
+
+**Option C: Download via Python**
+```python
+from ultralytics import YOLO
+model = YOLO("yolov8x-pose.pt")  # Downloads automatically
+```
+
+### 5. Verify Installation
+
+```bash
+python -c "from ultralytics import YOLO; print('✓ Ready!')"
 ```
 
 ## Quick Start
@@ -63,8 +98,8 @@ print(f"Processed {result['num_frames']} frames at {result['avg_fps']:.1f} FPS")
 ```python
 from ultralytics import YOLO
 
-# Load model (auto-downloads weights)
-model = YOLO('yolov8m-pose.pt')
+# Load model (auto-downloads weights if not present)
+model = YOLO('yolov8x-pose.pt')
 
 # Run inference on Apple Silicon
 results = model('sprint.mp4', device='mps')
@@ -78,13 +113,18 @@ for r in results:
 
 ## Model Variants
 
-| Model | Speed (M4) | Accuracy | Use Case |
-|-------|-----------|----------|----------|
-| `yolov8n-pose.pt` | ~3ms | Good | Quick testing |
-| `yolov8s-pose.pt` | ~5ms | Better | Fast processing |
-| `yolov8m-pose.pt` | ~8ms | High | **Recommended** |
-| `yolov8l-pose.pt` | ~12ms | Higher | Detailed analysis |
-| `yolov8x-pose.pt` | ~18ms | Highest | Maximum accuracy |
+| Model | Size | Speed (M4) | Accuracy | Use Case |
+|-------|------|-----------|----------|----------|
+| `yolov8n-pose.pt` | ~6 MB | ~3ms | Good | Quick testing |
+| `yolov8s-pose.pt` | ~23 MB | ~5ms | Better | Fast processing |
+| `yolov8m-pose.pt` | ~52 MB | ~8ms | High | **Recommended** |
+| `yolov8l-pose.pt` | ~84 MB | ~12ms | Higher | Detailed analysis |
+| `yolov8x-pose.pt` | ~133 MB | ~18ms | Highest | Maximum accuracy |
+
+To use a different model, update your config or download it directly:
+```bash
+python download_model.py --model m  # Download medium model
+```
 
 ## COCO Keypoint Format (17 points)
 
@@ -101,15 +141,16 @@ for r in results:
 ## Project Structure
 
 ```
-yolo_pose_estimation/
+Skeletal-Pose-Estimation/
 ├── configs/config.py      # Configuration settings
 ├── src/
 │   ├── pose_estimator.py  # YOLO-Pose wrapper
 │   ├── video_processor.py # Video I/O
 │   └── visualizer.py      # Skeleton drawing & kinograms
 ├── output/                # Generated files
-├── main.py               # CLI entry point
-└── requirements.txt      # Dependencies
+├── main.py                # CLI entry point
+├── download_model.py      # Model download utility
+└── requirements.txt       # Dependencies
 ```
 
 ## Output Files
@@ -128,6 +169,27 @@ config = get_fast_config()
 
 # Accurate: xlarge model, all frames
 config = get_accurate_config()
+```
+
+## Troubleshooting
+
+### Model not found
+If you see `Model not found` errors, run:
+```bash
+python download_model.py
+```
+
+### MPS (Apple Silicon) issues
+If GPU acceleration isn't working, verify PyTorch MPS support:
+```python
+import torch
+print(torch.backends.mps.is_available())  # Should be True
+```
+
+### Permission errors on macOS
+If you get camera/file access errors:
+```bash
+# Grant terminal access in System Preferences > Privacy & Security
 ```
 
 ## License

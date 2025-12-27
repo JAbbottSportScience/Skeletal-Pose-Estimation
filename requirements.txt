@@ -43,3 +43,6 @@ pandas>=2.0.0
 
 # Matplotlib - plotting
 matplotlib>=3.7.0
+
+# SciPy - signal processing (Butterworth filter)
+scipy>=1.11.0

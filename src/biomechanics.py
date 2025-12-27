@@ -125,13 +125,18 @@ def calculate_joint_angles(keypoints: np.ndarray) -> Dict[str, float]:
     """
     Calculate hip and knee flexion for lead and trail legs.
     
-    Hip Flexion: Angle at hip (trunk-hip-knee)
-        - Uses shoulder midpoint as trunk reference
-        - 0° = thigh aligned with trunk
-        - +ve = thigh forward (flexion)
+    Hip Flexion/Extension: Angle of thigh relative to VERTICAL
+        - 0° = thigh pointing straight down
+        - +ve = thigh forward of vertical (flexion)
+        - -ve = thigh behind vertical (extension)
+        
+        Example values during sprint:
+            Lead leg at max knee drive: +50° to +70°
+            Mid-stance: ~0° to +10°
+            Trail leg at toe-off: -20° to -30°
         
     Knee Flexion: Angle at knee (hip-knee-ankle)
-        - 0° = straight leg
+        - 0° = straight leg (full extension)
         - +ve = bent knee (flexion)
     
     Args:
@@ -142,12 +147,41 @@ def calculate_joint_angles(keypoints: np.ndarray) -> Dict[str, float]:
     """
     legs = get_leading_trailing_legs(keypoints)
     
-    # Trunk reference (midpoint of shoulders)
-    shoulder_mid = (keypoints[L_SHOULDER] + keypoints[R_SHOULDER]) / 2
+    # Vertical reference (pointing DOWN in image coordinates)
+    vertical = np.array([0, 1])
+    
+    def signed_angle_from_vertical(hip: np.ndarray, knee: np.ndarray) -> float:
+        """
+        Calculate signed angle of thigh from vertical.
+        Positive = forward (flexion), Negative = backward (extension)
+        """
+        # Thigh vector (hip to knee)
+        thigh = knee - hip
+        thigh_norm = np.linalg.norm(thigh)
+        
+        if thigh_norm < 1e-6:
+            return 0.0
+        
+        thigh = thigh / thigh_norm
+        
+        # Angle from vertical (unsigned)
+        cos_angle = np.dot(thigh, vertical)
+        cos_angle = np.clip(cos_angle, -1, 1)
+        angle = np.degrees(np.arccos(cos_angle))
+        
+        # Sign: positive if knee is in front of hip (forward flexion)
+        # In image coords, "forward" depends on running direction
+        # Use x-component: if knee.x > hip.x, thigh is angled forward-right
+        # We'll use the x-component of thigh vector for sign
+        if thigh[0] > 0:  # Knee is to the right of hip
+            sign = 1  # Forward flexion (assuming running right)
+        else:
+            sign = -1  # Backward extension
+        
+        return sign * angle
     
     # Lead leg angles
-    lead_hip_angle = calculate_angle(
-        shoulder_mid, 
+    lead_hip_angle = signed_angle_from_vertical(
         legs['lead']['hip'], 
         legs['lead']['knee']
     )
@@ -157,9 +191,8 @@ def calculate_joint_angles(keypoints: np.ndarray) -> Dict[str, float]:
         legs['lead']['ankle']
     )
     
-    # Trail leg angles
-    trail_hip_angle = calculate_angle(
-        shoulder_mid,
+    # Trail leg angles  
+    trail_hip_angle = signed_angle_from_vertical(
         legs['trail']['hip'],
         legs['trail']['knee']
     )
@@ -169,10 +202,10 @@ def calculate_joint_angles(keypoints: np.ndarray) -> Dict[str, float]:
         legs['trail']['ankle']
     )
     
-    # Convert to flexion (180 - angle)
+    # Knee flexion = 180 - angle (so 0° = straight, higher = more bent)
     return {
-        'lead_hip_flexion': 180 - lead_hip_angle,
-        'trail_hip_flexion': 180 - trail_hip_angle,
+        'lead_hip_flexion': lead_hip_angle,
+        'trail_hip_flexion': trail_hip_angle,
         'lead_knee_flexion': 180 - lead_knee_angle,
         'trail_knee_flexion': 180 - trail_knee_angle,
         'lead_side': legs['lead']['side'],

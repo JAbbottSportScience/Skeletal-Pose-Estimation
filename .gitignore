@@ -1,4 +1,6 @@
 venv
 yolov8x-pose.pt
-videos
 .DS_Store
+output
+videos
+runs

@@ -1,22 +1,35 @@
 # ==============================================================================
 # YOLO-POSE ESTIMATION - REQUIREMENTS
 # ==============================================================================
-# Simple! Just two lines that actually matter.
-#
 # Installation:
 #   pip install -r requirements.txt
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
-# CORE DEPENDENCIES (that's it!)
+# CORE DEPENDENCIES
 # ------------------------------------------------------------------------------
 
 # Ultralytics YOLO - includes torch, torchvision, numpy, opencv, etc.
-# Single package handles everything with no dependency conflicts
 ultralytics>=8.0.0
 
-# OpenCV - video/image processing (included with ultralytics, but explicit)
+# OpenCV - video/image processing
 opencv-python>=4.8.0
+
+# ------------------------------------------------------------------------------
+# WEB APPLICATION (app.py)
+# ------------------------------------------------------------------------------
+
+# Dash - web framework
+dash>=2.14.0
+
+# Dash Bootstrap Components - UI styling
+dash-bootstrap-components>=1.5.0
+
+# Plotly - interactive visualizations
+plotly>=5.18.0
+
+# NumPy - numerical operations (included with ultralytics, but explicit)
+numpy>=1.24.0
 
 # ------------------------------------------------------------------------------
 # OPTIONAL: FOR DEVELOPMENT

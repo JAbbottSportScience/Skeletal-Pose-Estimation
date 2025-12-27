@@ -1,0 +1,32 @@
+# ==============================================================================
+# YOLO-POSE ESTIMATION - REQUIREMENTS
+# ==============================================================================
+# Simple! Just two lines that actually matter.
+#
+# Installation:
+#   pip install -r requirements.txt
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# CORE DEPENDENCIES (that's it!)
+# ------------------------------------------------------------------------------
+
+# Ultralytics YOLO - includes torch, torchvision, numpy, opencv, etc.
+# Single package handles everything with no dependency conflicts
+ultralytics>=8.0.0
+
+# OpenCV - video/image processing (included with ultralytics, but explicit)
+opencv-python>=4.8.0
+
+# ------------------------------------------------------------------------------
+# OPTIONAL: FOR DEVELOPMENT
+# ------------------------------------------------------------------------------
+
+# Rich - beautiful terminal output
+rich>=13.0.0
+
+# Pandas - data export to CSV
+pandas>=2.0.0
+
+# Matplotlib - plotting
+matplotlib>=3.7.0

@@ -48,6 +48,26 @@ from src.visualizer import SkeletonVisualizer, KinogramGenerator, save_annotated
 
 
 # ==============================================================================
+# MODEL DOWNLOAD CHECK
+# ==============================================================================
+
+def check_model_exists(model_name: str = "yolov8x-pose.pt") -> bool:
+    """Check if model exists, print helpful message if not."""
+    model_path = Path(model_name)
+    
+    if not model_path.exists():
+        print("\n" + "=" * 60)
+        print("MODEL DOWNLOAD REQUIRED")
+        print("=" * 60)
+        print(f"  Model '{model_name}' not found locally.")
+        print("  Ultralytics will now download it automatically.")
+        print("  This is a one-time download (~133 MB for yolov8x-pose).")
+        print("=" * 60 + "\n")
+        return False
+    return True
+
+
+# ==============================================================================
 # MAIN PIPELINE CLASS
 # ==============================================================================
 
@@ -75,6 +95,8 @@ class SprintAnalysisPipeline:
     @property
     def estimator(self):
         if self._estimator is None:
+            # Check if model needs to be downloaded
+            check_model_exists(self.config.model.model_name)
             self._estimator = create_estimator(self.config)
         return self._estimator
     

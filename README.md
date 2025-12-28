@@ -51,7 +51,7 @@ python download_model.py
 **Option C: Download via Python**
 ```python
 from ultralytics import YOLO
-model = YOLO("yolov8x-pose.pt")  # Downloads automatically
+model = YOLO("yolov11x-pose.pt")  # Downloads automatically
 ```
 
 ### 5. Verify Installation
@@ -115,11 +115,11 @@ for r in results:
 
 | Model | Size | Speed (M4) | Accuracy | Use Case |
 |-------|------|-----------|----------|----------|
-| `yolov8n-pose.pt` | ~6 MB | ~3ms | Good | Quick testing |
-| `yolov8s-pose.pt` | ~23 MB | ~5ms | Better | Fast processing |
-| `yolov8m-pose.pt` | ~52 MB | ~8ms | High | **Recommended** |
-| `yolov8l-pose.pt` | ~84 MB | ~12ms | Higher | Detailed analysis |
-| `yolov8x-pose.pt` | ~133 MB | ~18ms | Highest | Maximum accuracy |
+| `yolov11n-pose.pt` | ~6 MB | ~3ms | Good | Quick testing |
+| `yolov11s-pose.pt` | ~23 MB | ~5ms | Better | Fast processing |
+| `yolov11m-pose.pt` | ~52 MB | ~8ms | High | **Recommended** |
+| `yolov11l-pose.pt` | ~84 MB | ~12ms | Higher | Detailed analysis |
+| `yolov11x-pose.pt` | ~133 MB | ~18ms | Highest | Maximum accuracy |
 
 To use a different model, update your config or download it directly:
 ```bash

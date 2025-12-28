@@ -51,6 +51,8 @@ from src.biomechanics import (
 )
 
 
+
+
 # ==============================================================================
 # BUTTERWORTH FILTER
 # ==============================================================================
@@ -224,6 +226,43 @@ app = dash.Dash(
     suppress_callback_exceptions=True
 )
 
+# Fix dropdown text visibility in dark theme
+app.index_string = '''
+<!DOCTYPE html>
+<html>
+    <head>
+        {%metas%}
+        <title>{%title%}</title>
+        {%favicon%}
+        {%css%}
+        <style>
+            /* Fix dropdown text visibility in dark theme */
+            .Select-control, .Select-menu-outer {
+                background-color: #303030 !important;
+                color: #fff !important;
+            }
+            .Select-value-label, .Select-option {
+                color: #fff !important;
+            }
+            .Select-option:hover {
+                background-color: #444 !important;
+            }
+            .Select-placeholder {
+                color: #aaa !important;
+            }
+        </style>
+    </head>
+    <body>
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>
+'''
+
 
 # ==============================================================================
 # LAYOUT
@@ -331,11 +370,11 @@ app.layout = dbc.Container([
                     dcc.Dropdown(
                         id='model-select',
                         options=[
-                            {'label': 'YOLOv8n (Fast)', 'value': 'yolov8n-pose.pt'},
-                            {'label': 'YOLOv8m (Medium)', 'value': 'yolov8m-pose.pt'},
-                            {'label': 'YOLOv8x (Accurate)', 'value': 'yolov8x-pose.pt'},
+                            {'label': 'YOLO11n (Fast)', 'value': 'yolo11n-pose.pt'},
+                            {'label': 'YOLO11m (Medium)', 'value': 'yolo11m-pose.pt'},
+                            {'label': 'YOLO11x (Accurate)', 'value': 'yolo11x-pose.pt'},
                         ],
-                        value='yolov8x-pose.pt', clearable=False, className="mb-3"
+                        value='yolo11x-pose.pt', clearable=False, className="mb-3"
                     ),
                     
                     dbc.Label("Confidence"),

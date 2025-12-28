@@ -164,7 +164,7 @@ class ModelConfig:
     # Model weights are auto-downloaded on first use to ~/.cache/ultralytics/
     # You can also specify a local path: model_name = "./models/yolov8m-pose.pt"
     # ---------------------------------------------------------------------------
-    model_name: str = "yolov8x-pose.pt"
+    model_name: str = "yolo11x-pose.pt"
     
     # ---------------------------------------------------------------------------
     # Detection Parameters
@@ -509,7 +509,7 @@ class PoseEstimationConfig:
 def get_fast_config() -> PoseEstimationConfig:
     """Speed-optimized configuration."""
     config = PoseEstimationConfig()
-    config.model.model_name = "yolov8n-pose.pt"  # Nano model
+    config.model.model_name = "yolov11n-pose.pt"  # Nano model
     config.device.half_precision = True
     config.video.skip_frames = 2
     config.output.save_visualizations = False
@@ -519,7 +519,7 @@ def get_fast_config() -> PoseEstimationConfig:
 def get_accurate_config() -> PoseEstimationConfig:
     """Accuracy-optimized configuration."""
     config = PoseEstimationConfig()
-    config.model.model_name = "yolov8x-pose.pt"  # XLarge model
+    config.model.model_name = "yolov11x-pose.pt"  # XLarge model
     config.model.confidence_threshold = 0.3
     config.video.skip_frames = 1
     return config

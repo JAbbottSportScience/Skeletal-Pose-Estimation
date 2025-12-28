@@ -1,5 +1,6 @@
 venv
 yolov8x-pose.pt
+yolov11x-pose.pt
 .DS_Store
 output
 videos

@@ -23,11 +23,11 @@ from pathlib import Path
 
 # Model variants and their approximate sizes
 MODELS = {
-    "n": ("yolov8n-pose.pt", "~6 MB"),
-    "s": ("yolov8s-pose.pt", "~23 MB"),
-    "m": ("yolov8m-pose.pt", "~52 MB"),
-    "l": ("yolov8l-pose.pt", "~84 MB"),
-    "x": ("yolov8x-pose.pt", "~133 MB"),
+    "n": ("yolov11n-pose.pt", "~6 MB"),
+    "s": ("yolov11s-pose.pt", "~23 MB"),
+    "m": ("yolov11m-pose.pt", "~52 MB"),
+    "l": ("yolov11l-pose.pt", "~84 MB"),
+    "x": ("yolov11x-pose.pt", "~133 MB"),
 }
 
 DEFAULT_MODEL = "x"
@@ -126,7 +126,7 @@ Examples:
     args = parser.parse_args()
     
     print("=" * 60)
-    print("YOLOv8-Pose Model Downloader")
+    print("YOLOv11-Pose Model Downloader")
     print("=" * 60 + "\n")
     
     if args.all:
